@@ -18,18 +18,21 @@ exports.catchErrors = (fn) => {
 */
 exports.developmentErrors = (err, req, res, next) => {
   err.stack = err.stack || '';
+  err.status = err.isJoi ? 400 : err.status;
+
   const errorDetails = {
     message: err.message,
     status: err.status,
     stackHighlighted: err.stack.replace(/[a-z_-\d]+.js:\d+:\d+/gi, '<mark>$&</mark>')
   };
+
+  if (process.env.NODE_ENV === 'development' || process.argv.indexOf('--log') !== -1) {
+    console.error(err);
+  }
+
   res.status(err.status || 500);
   res.format({
-    // Based on the `Accept` http header
-    'text/html': () => {
-      res.render('error', errorDetails);
-    }, // Form Submit, Reload the page
-    'application/json': () => res.json(errorDetails) // Ajax call, send JSON back
+    'application/json': () => res.json(errorDetails)
   });
 };
 
@@ -39,9 +42,12 @@ exports.developmentErrors = (err, req, res, next) => {
  * No stacktraces are leaked to user
 */
 exports.productionErrors = (err, req, res, next) => {
+  err.status = err.isJoi ? 400 : err.status;
+
   res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
+  res.format({
+    'application/json': () => res.json({
+      message: err.message
+    })
   });
 };

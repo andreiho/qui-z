@@ -1,9 +1,7 @@
 const path = require('path');
+const config = require('config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-
-// Import environmental variables from our variables.env file
-require('dotenv').config({ path: 'variables.env' });
 
 const outputDirectory = 'dist';
 
@@ -29,10 +27,10 @@ module.exports = {
     ]
   },
   devServer: {
-    port: process.env.PORT,
+    port: config.get('ports.client'),
     open: true,
     proxy: {
-      '/api': `http://localhost:${process.env.API_PORT}`
+      '/api': `http://localhost:${config.get('ports.server')}`
     }
   },
   plugins: [
