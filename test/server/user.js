@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const expect = require('unexpected');
+const config = require('config');
 
 const User = require('../../src/server/models/user');
-const clean = require('./helpers/clean');
+const { clean } = require('./helpers');
 const server = require('../../src/server/start');
 const agent = supertest(server);
 
 describe('User', () => {
   before(done => {
-    clean(User).then(done).catch(done);
+    clean([ User ]).then(() => done()).catch(done);
   });
 
   after(done => {
-    clean(User).then(done).catch(done);
+    clean([ User ]).then(() => done()).catch(done);
   });
 
   context('Register', () => {
@@ -48,7 +49,7 @@ describe('User', () => {
         passwordConfirmation: 'test123'
       };
 
-      agent.post('/api/register').send(user).expect(500, done);
+      agent.post('/api/register').send(user).expect(404, done);
     });
 
     it('should fail registering a user without an e-mail address', done => {
@@ -116,10 +117,12 @@ describe('User', () => {
         .end((err, res) => {
           if (err) return done(err);
 
-          expect(res.text, 'to be', 'Logged in.');
+          expect(res.body.sessionId, 'to be defined');
+          expect(res.body.user, 'to be defined');
+          expect(res.body.user.email, 'to be', user.email);
           expect(res.headers['set-cookie'], 'not to be empty');
           expect(res.headers['set-cookie'], 'to have an item satisfying', cookie => {
-            expect(cookie, 'to contain', 'quiz=');
+            expect(cookie, 'to contain', `${config.get('auth.key')}=`);
           });
 
           done();

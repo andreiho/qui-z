@@ -9,6 +9,9 @@ mongoose.connection.on('error', (err) => {
 });
 
 // Import all of our models
+require('./models/question');
+require('./models/quiz');
+require('./models/response');
 require('./models/user');
 
 // Start our app

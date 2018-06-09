@@ -4,6 +4,8 @@ const session = require('express-session');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const { promisify } = require('es6-promisify');
 const passport = require('passport');
 require('./handlers/passport');
 
@@ -18,10 +20,13 @@ app.use(express.static('dist'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Populates req.cookies with any cookies that came along with the request
+app.use(cookieParser(config.get('auth.secret')));
+
 // Sessions allow us to store data on visitors from request to request
 app.use(session({
+  name: config.get('auth.key'),
   secret: config.get('auth.secret'),
-  key: config.get('auth.key'),
   resave: false,
   saveUninitialized: false,
   store: new MongoStore({ mongooseConnection: mongoose.connection })
@@ -30,6 +35,12 @@ app.use(session({
 // Passport JS is what we use to handle our logins
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Promisify some callback based APIs
+app.use((req, res, next) => {
+  req.login = req.logIn = promisify(req.login, req);
+  next();
+});
 
 // Handle our API routes
 app.use('/', routes);

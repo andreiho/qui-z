@@ -19,11 +19,13 @@ const userSchema = new mongoose.Schema({
     required: 'Please supply a name.',
     trim: true
   }
+}, {
+  versionKey: false
 });
 
-userSchema.virtual('gravatar').get(() => {
+userSchema.virtual('gravatar').get(function() {
   const hash = md5(this.email);
-  return `https://gravatar.com/avatar/${hash}?s=200`
+  return `https://gravatar.com/avatar/${hash}?s=200`;
 });
 
 userSchema.plugin(passportLocalMongoose, { usernameField: 'email' });
