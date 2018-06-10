@@ -18,7 +18,7 @@
     "server": "NODE_ENV=development nodemon ./src/server/start.js",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "test-client": "NODE_ENV=test jest --watch",
-    "test-server": "NODE_ENV=test ./node_modules/mocha/bin/mocha tests/server/**.js",
+    "test-server": "NODE_ENV=test ./node_modules/mocha/bin/mocha tests/server/**.js --exit",
     "test": "npm run test-server"
   },
   "dependencies": {
