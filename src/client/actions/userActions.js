@@ -59,7 +59,8 @@ const logout = () => {
         dispatch(request());
         sessionService.deleteSession();
         sessionService.deleteUser();
-        history.push('/');
+        history.push('/login');
+        dispatch(alertActions.success(`You have been logged out.`));
       })
       .catch(error => {
         dispatch(alertActions.error(error));

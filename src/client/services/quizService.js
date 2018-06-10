@@ -1,36 +1,24 @@
-import { handleResponse, getRequestOptions } from '../helpers/auth';
+import axios from 'axios';
+import { handleResponse, handleError } from '../helpers/auth';
 
 const getAll = () => {
-  const requestOptions = getRequestOptions('GET');
-  return fetch('/api/quiz', requestOptions).then(handleResponse);
+  return axios.get('/api/quiz').then(handleResponse).catch(handleError);
 };
 
 const getBySlug = (slug) => {
-  const requestOptions = getRequestOptions('GET');
-  return fetch(`/api/quiz/${slug}`, requestOptions).then(handleResponse);
+  return axios.get(`/api/quiz/${slug}`).then(handleResponse).catch(handleError);
 };
 
 const create = (quiz) => {
-  const requestOptions = {
-    ...getRequestOptions('POST'),
-    body: JSON.stringify(quiz)
-  };
-
-  return fetch('/api/quiz', requestOptions).then(handleResponse);
+  return axios.post('/api/quiz', quiz).then(handleResponse).catch(handleError);
 }
 
 const _delete = (id) => {
-  const requestOptions = getRequestOptions('DELETE');
-  return fetch(`/api/quiz/${id}`, requestOptions).then(handleResponse);
+  return axios.delete(`/api/quiz/${id}`).then(handleResponse).catch(handleError);
 };
 
 const submitResponse = (quiz, response) => {
-  const requestOptions = {
-    ...getRequestOptions('POST'),
-    body: JSON.stringify(response)
-  };
-
-  return fetch(`/api/quiz/${quiz}/response`, requestOptions).then(handleResponse);
+  return axios.post(`/api/quiz/${quiz}/response`, response).then(handleResponse).catch(handleError);
 };
 
 export const quizService = {

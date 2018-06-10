@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const expect = require('unexpected');
-const config = require('config');
 
 const User = require('../../src/server/models/user');
 const { clean } = require('./helpers');
@@ -122,7 +121,7 @@ describe('User', () => {
           expect(res.body.user.email, 'to be', user.email);
           expect(res.headers['set-cookie'], 'not to be empty');
           expect(res.headers['set-cookie'], 'to have an item satisfying', cookie => {
-            expect(cookie, 'to contain', `${config.get('auth.key')}=`);
+            expect(cookie, 'to contain', `${process.env.AUTH_KEY}=`);
           });
 
           done();

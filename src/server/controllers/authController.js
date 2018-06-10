@@ -27,7 +27,7 @@ exports.logout = (req, res, next) => {
 }
 
 exports.isLoggedIn = (req, res, next) => {
-  if (process.env.NODE_ENV === 'development' || req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
     return next();
   }
   next({ status: 401, message: 'You must be logged to perform that action.' });

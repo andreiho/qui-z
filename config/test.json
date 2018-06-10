@@ -1,9 +1,0 @@
-{
-  "db": {
-    "mongoUrl": "mongodb://@localhost:27017/qui-z-test"
-  },
-  "ports": {
-    "client": 3010,
-    "server": 3011
-  }
-}

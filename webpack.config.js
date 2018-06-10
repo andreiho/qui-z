@@ -1,7 +1,10 @@
 const path = require('path');
-const config = require('config');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const dotenv = require('dotenv');
+
+// Import environmental variables from our variables.env file
+require('dotenv').config({ path: 'variables.env' });
 
 const outputDirectory = 'dist';
 
@@ -37,12 +40,13 @@ module.exports = {
     }
     ]
   },
+  devtool: 'source-map',
   devServer: {
-    port: config.get('ports.client'),
+    port: process.env.CLIENT_PORT,
     open: true,
     historyApiFallback: true,
     proxy: {
-      '/api': `http://localhost:${config.get('ports.server')}`
+      '/api': `http://localhost:${process.env.SERVER_PORT}`
     }
   },
   node: {

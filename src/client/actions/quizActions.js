@@ -50,8 +50,8 @@ const create = (quiz) => {
     quizService.create(quiz)
       .then(newQuiz => {
         dispatch(success(newQuiz));
+        history.push(`/quiz/${newQuiz.slug}`);
         dispatch(alertActions.success(`${quiz.name} was created successfully.`));
-        history.go(`/quiz/${newQuiz.slug}`);
       })
       .catch(error => {
         dispatch(failure(error));

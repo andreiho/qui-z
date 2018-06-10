@@ -1,26 +1,16 @@
-import { handleResponse, getRequestOptions } from '../helpers/auth';
+import axios from 'axios';
+import { handleResponse, handleError } from '../helpers/auth';
 
 const register = user => {
-  const requestOptions = {
-    ...getRequestOptions('POST', false),
-    body: JSON.stringify(user)
-  };
-
-  return fetch('/api/register', requestOptions).then(handleResponse);
+  return axios.post('/api/register', user, { withCredentials: false }).then(handleResponse).catch(handleError);
 };
 
 const login = (email, password) => {
-  const requestOptions = {
-    ...getRequestOptions('POST', false),
-    body: JSON.stringify({ email, password })
-  };
-
-  return fetch('/api/login', requestOptions).then(handleResponse);
+  return axios.post('/api/login', { email, password }, { withCredentials: false }).then(handleResponse).catch(handleError);
 }
 
 const logout = () => {
-  const requestOptions = getRequestOptions('GET');
-  return fetch('/api/logout', requestOptions).then(handleResponse);
+  return axios.get('/api/logout').then(handleResponse).catch(handleError);
 }
 
 export const userService = {

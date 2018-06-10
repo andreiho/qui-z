@@ -1,4 +1,3 @@
-const config = require('config');
 const express = require('express');
 const session = require('express-session');
 const mongoose = require('mongoose');
@@ -32,12 +31,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Populates req.cookies with any cookies that came along with the request
-app.use(cookieParser(config.get('auth.secret')));
+app.use(cookieParser(process.env.AUTH_SECRET));
 
 // Sessions allow us to store data on visitors from request to request
 app.use(session({
-  name: config.get('auth.key'),
-  secret: config.get('auth.secret'),
+  name: process.env.AUTH_KEY,
+  secret: process.env.AUTH_SECRET,
   resave: false,
   saveUninitialized: false,
   store: new MongoStore({ mongooseConnection: mongoose.connection })

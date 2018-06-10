@@ -37,7 +37,7 @@ class App extends React.Component {
 
             <Container>
               { alert.message &&
-                <Shake>
+                <Shake onReveal={() => setTimeout(() => { dispatch(alertActions.clear()) }, 5000)}>
                   <Alert color={alert.type} toggle={() => dispatch(alertActions.clear())} className="mb-4">
                     {alert.message}
                   </Alert>
