@@ -2,7 +2,6 @@ import { sessionService } from 'redux-react-session';
 
 import { userConstants } from '../constants/userConstants';
 import { userService } from '../services/userService';
-import { alertActions } from '../actions/alertActions';
 import history from '../helpers/history';
 
 const register = (user) => {
@@ -40,7 +39,6 @@ const login = (email, password) => {
           .then(() => {
             dispatch(success(res.user));
             history.push('/');
-            dispatch(alertActions.success('You are now logged in.'));
           });
       })
       .catch(error => {
@@ -60,7 +58,6 @@ const logout = () => {
         sessionService.deleteSession();
         sessionService.deleteUser();
         history.push('/login');
-        dispatch(alertActions.success(`You have been logged out.`));
       })
       .catch(error => {
         dispatch(alertActions.error(error));
