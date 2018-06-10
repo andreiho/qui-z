@@ -8,14 +8,14 @@ const authController = require('../controllers/authController');
 const quizController = require('../controllers/quizController');
 const responseController = require('../controllers/responseController');
 
-router.get(['/', '/api'], (req, res, next) => {
+router.get('/', (req, res, next) => {
   res.send('Welcome to the qui-z API!');
 });
 
 /**
  * Register a user
  */
-router.post('/api/register',
+router.post('/register',
   celebrate({
     body: {
       email: Joi.string().email().required(),
@@ -31,7 +31,7 @@ router.post('/api/register',
 /**
  * Log in a user
  */
-router.post('/api/login',
+router.post('/login',
   celebrate({
     body: {
       email: Joi.string().email().required(),
@@ -44,12 +44,12 @@ router.post('/api/login',
 /**
  * Log out a user
  */
-router.get('/api/logout', authController.logout);
+router.get('/logout', authController.logout);
 
 /**
  * Create a quiz
  */
-router.post('/api/quiz',
+router.post('/quiz',
   authController.isLoggedIn,
   celebrate({
     body: {
@@ -72,11 +72,11 @@ router.post('/api/quiz',
 /**
  * Get a quiz
  */
-router.get('/api/quiz/:id',
+router.get('/quiz/:slug',
   authController.isLoggedIn,
   celebrate({
     params: {
-      id: Joi.string().required()
+      slug: Joi.string().required()
     }
   }),
   catchErrors(quizController.get)
@@ -85,7 +85,7 @@ router.get('/api/quiz/:id',
 /**
  * Get all quizzes
  */
-router.get('/api/quiz',
+router.get('/quiz',
   authController.isLoggedIn,
   catchErrors(quizController.getAll)
 );
@@ -93,7 +93,7 @@ router.get('/api/quiz',
 /**
  * Delete a quiz
  */
-router.delete('/api/quiz/:id',
+router.delete('/quiz/:id',
   authController.isLoggedIn,
   celebrate({
     params: {
@@ -106,7 +106,7 @@ router.delete('/api/quiz/:id',
 /**
  * Submit a response to a quiz
  */
-router.post('/api/quiz/:id/response',
+router.post('/quiz/:id/response',
   authController.isLoggedIn,
   celebrate({
     params: {

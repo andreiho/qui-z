@@ -7,14 +7,25 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { promisify } = require('es6-promisify');
 const passport = require('passport');
+const path = require('path');
 require('./handlers/passport');
 
 const routes = require('./routes/index');
 const errorHandlers = require('./handlers/error');
+
 const app = express();
 
-// Serve the static client app
-app.use(express.static('dist'));
+// Production settings
+if (process.env.NODE_ENV === 'production') {
+  // Serve the static React app
+  app.use(express.static(path.join(__dirname, '../../dist')));
+
+  // Make sure all paths, except the API ones redirect to the index page
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+    res.sendFile(path.join(__dirname, '../../dist/index.html'));
+  });
+}
 
 // Takes the raw requests and turns them into usable properties on req.body
 app.use(bodyParser.json());
@@ -43,7 +54,7 @@ app.use((req, res, next) => {
 });
 
 // Handle our API routes
-app.use('/', routes);
+app.use('/api', routes);
 
 // Development error handler
 if (app.get('env') !== 'production') {
