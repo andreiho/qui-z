@@ -1,5 +1,6 @@
 {
   "alias": [
     "qui-z"
-  ]
+  ],
+  "dotenv": "variables.env"
 }
