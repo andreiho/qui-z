@@ -18,9 +18,9 @@ exports.create = async (req, res) => {
 }
 
 exports.get = async (req, res, next) => {
-  const quiz = await Quiz.findById(req.params.id);
+  const quiz = await Quiz.findOne({ slug: req.params.slug });
   if (!quiz) {
-    return next({ status: 404, message: `No quiz with id ${req.params.id} exists.` });
+    return next({ status: 404, message: `${req.params.slug} does not exist.` });
   }
 
   res.status(200).json(quiz);
