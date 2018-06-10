@@ -2,6 +2,7 @@ import { sessionService } from 'redux-react-session';
 
 import { userConstants } from '../constants/userConstants';
 import { userService } from '../services/userService';
+import { alertActions } from '../actions/alertActions';
 import history from '../helpers/history';
 
 const register = (user) => {
