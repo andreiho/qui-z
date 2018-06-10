@@ -79,9 +79,7 @@ jobs:
           command: sudo npm i -g now
       - run:
           name: Deploy to now
-          command: |
-              URL=$(now -t ${NOW_TOKEN})
-              now -t ${NOW_TOKEN} -e MONGO_URL=${MONGO_URL} -e AUTH_SECRET=${AUTH_SECRET} -e AUTH_KEY=${AUTH_KEY} alias ${URL} qui-z
+          command: now -t ${NOW_TOKEN} -e MONGO_URL=${MONGO_URL} -e AUTH_SECRET=${AUTH_SECRET} -e AUTH_KEY=${AUTH_KEY} alias qui-z
 
 ############################################################
 # Workflows
