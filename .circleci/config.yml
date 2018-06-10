@@ -48,9 +48,6 @@ jobs:
       - checkout
       - *restore_yarn
       - run:
-          name: Install now
-          command: yarn global add now
-      - run:
           name: Install dependencies
           command: yarn install --pure-lockfile
       - save_cache:
@@ -79,12 +76,14 @@ jobs:
 
     steps:
       - checkout
-      - *restore_yarn
       - run:
-          name: Log in to now.sh
+          name: Install now
+          command: yarn global add now
+      - run:
+          name: Log in to now
           command: now -t ${NOW_TOKEN}
       - run:
-          name: Deploy to now.sh
+          name: Deploy to now
           command: now -t ${NOW_TOKEN} -e MONGO_URL=${MONGO_URL} -e AUTH_SECRET=${AUTH_SECRET} -e AUTH_KEY=${AUTH_KEY} alias qui-z
 
 ############################################################
