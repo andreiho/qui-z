@@ -80,10 +80,11 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Log in to now.sh
+          command: now -t ${NOW_TOKEN}
+      - run:
           name: Deploy to now.sh
-          command:
-            - now -t ${NOW_TOKEN}
-            - now -t ${NOW_TOKEN} -e MONGO_URL=${MONGO_URL} -e AUTH_SECRET=${AUTH_SECRET} -e AUTH_KEY=${AUTH_KEY} alias qui-z
+          command: now -t ${NOW_TOKEN} -e MONGO_URL=${MONGO_URL} -e AUTH_SECRET=${AUTH_SECRET} -e AUTH_KEY=${AUTH_KEY} alias qui-z
 
 ############################################################
 # Workflows
