@@ -78,6 +78,9 @@ jobs:
           name: Install now
           command: sudo npm i -g now
       - run:
+          name: Configure now
+          command: now -t ${NOW_TOKEN}
+      - run:
           name: Deploy to now
           command: now -t ${NOW_TOKEN} -e MONGO_URL=${MONGO_URL} -e AUTH_SECRET=${AUTH_SECRET} -e AUTH_KEY=${AUTH_KEY} alias qui-z
 
