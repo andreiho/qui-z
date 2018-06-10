@@ -35,7 +35,7 @@ class QuestionCard extends React.Component {
   }
 
   render() {
-    const { question, user, correctAnswer } = this.props;
+    const { question, user, correctAnswer, index } = this.props;
     const { selected } = this.state;
     const options = [ question.option1, question.option2, question.option3, question.option4 ];
     const submitted = typeof correctAnswer !== 'undefined';
@@ -44,13 +44,13 @@ class QuestionCard extends React.Component {
     return (
       <Card className="mb-4" outline color={submitted && isCorrect ? 'success' : (submitted && !isCorrect ? 'danger' : '')}>
         <CardBody>
-          <CardTitle tag="h5">{question.name}</CardTitle>
+          <CardTitle tag="h5">{index + 1}. {question.name}</CardTitle>
 
           <hr/>
 
           <FormGroup className="mb-0">
-            { options.map((option, index) => {
-                const key = index + 1;
+            { options.map((option, optionIndex) => {
+                const key = optionIndex + 1;
 
                 return (
                   <CustomInput

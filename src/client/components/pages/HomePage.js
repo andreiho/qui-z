@@ -32,7 +32,7 @@ class HomePage extends React.Component {
 
             <CardColumns>
               { quizzes.map((quiz, index) =>
-                <Zoom delay={100 * index}>
+                <Zoom delay={100 * index} key={index}>
                   <QuizCard key={index} quiz={quiz} />
                 </Zoom>
               )}

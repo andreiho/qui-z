@@ -80,6 +80,7 @@ class QuizPage extends React.Component {
                 <Zoom delay={zoomDelay * index}>
                   <QuestionCard
                     key={index}
+                    index={index}
                     question={question}
                     onOptionSelected={this.handleOptionSelected}
                     correctAnswer={correctAnswers && correctAnswers[question._id]}

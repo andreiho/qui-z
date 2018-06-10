@@ -174,14 +174,20 @@ class QuizFormPage extends React.Component {
                         <CardBody>
                           <div className="d-flex justify-content-between">
                             <div className="flex-grow-1">
-                              <Input
-                                type="text"
-                                name={`question${questionIndex}`}
-                                placeholder={`Question ${questionIndex + 1}` }
-                                value={this.state.quiz.questions[questionIndex].name}
-                                onChange={this.handleQuestionName}
-                                invalid={submitted && !questions[questionIndex].name}
-                              />
+                              <InputGroup>
+                                <InputGroupAddon addonType="prepend">
+                                  <InputGroupText>{questionIndex + 1}.</InputGroupText>
+                                </InputGroupAddon>
+
+                                <Input
+                                  type="text"
+                                  name={`question${questionIndex}`}
+                                  placeholder={`Question ${questionIndex + 1}` }
+                                  value={this.state.quiz.questions[questionIndex].name}
+                                  onChange={this.handleQuestionName}
+                                  invalid={submitted && !questions[questionIndex].name}
+                                />
+                              </InputGroup>
                             </div>
 
                             { questions.length > 1 &&

@@ -98,6 +98,7 @@ const submitResponse = (quiz, response) => {
           }
         });
 
+        window.scrollTo(0, 0);
         dispatch(alertActions.success(`Thank you. You answered correctly to ${totalCorrect} questions.`));
       })
       .catch(error => dispatch(failure(error)));
