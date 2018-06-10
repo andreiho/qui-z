@@ -78,9 +78,6 @@ jobs:
           name: Install now
           command: yarn global add now
       - run:
-          name: Log in to now
-          command: now -t ${NOW_TOKEN}
-      - run:
           name: Deploy to now
           command: |
               URL=$(now -t ${NOW_TOKEN})

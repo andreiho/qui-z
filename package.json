@@ -6,11 +6,6 @@
     "node": ">= 8"
   },
   "main": "src/server/start.js",
-  "now": {
-    "alias": [
-      "qui-z"
-    ]
-  },
   "scripts": {
     "start": "NODE_ENV=production node ./src/server/start.js",
     "build": "webpack --mode production",
