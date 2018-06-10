@@ -151,7 +151,7 @@ describe('Quiz', () => {
 
   context('Retrieve', () => {
     it('should retrieve a quiz', done => {
-      mockAuth('get', `/api/quiz/${quizId}`)
+      mockAuth('get', '/api/quiz/test-quiz')
         .expect(200)
         .end((err, res) => {
           if (err) return done(err);
@@ -169,19 +169,36 @@ describe('Quiz', () => {
         });
     });
 
-    it('should fail retrieving a quiz with a malformed id', done => {
-      mockAuth('get', '/api/quiz/not-a-valid-id').expect(500, done);
-    });
-
     it('should fail retrieving a quiz that does not exist', done => {
-      mockAuth('get', '/api/quiz/5b1afb348728da12127ec088').expect(404, done);
+      mockAuth('get', '/api/quiz/does-not-exist').expect(404, done);
     });
 
     it('should fail retrieving if not logged in', done => {
-      agent.get(`/api/quiz/${quizId}`).expect(401, done);
+      agent.get('/api/quiz/test-quiz').expect(401, done);
     });
 
-    it('should retrieve all quizzes');
+    it('should retrieve all quizzes', done => {
+      mockAuth('get', '/api/quiz')
+        .expect(200)
+        .end((err, res) => {
+          if (err) return done(err);
+
+          expect(res.body, 'to be an array');
+          expect(res.body, 'to have length', 1);
+          expect(res.body, 'to have an item satisfying', item => {
+            expect(item._id, 'to be', quizId);
+            expect(item.name, 'to be', quiz.name);
+            expect(item.slug, 'to be', 'test-quiz');
+            expect(item.author, 'to be defined');
+            expect(item.author.email, 'to be', user.email);
+            expect(item.author.name, 'to be', user.name);
+            expect(item.questions, 'to be an array').and('to have length', quiz.questions.length);
+            expect(item.questions[0].correctAnswer, 'to be undefined');
+          });
+
+          done();
+        });
+    });
   });
 
   context('Delete', () => {
