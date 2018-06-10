@@ -12,6 +12,7 @@ defaults: &defaults
   working_directory: *working_directory
   docker:
     - image: circleci/node:8-browsers
+    - image: circleci/mongo:3.4
 
 dependency_cache_key: &dependency_cache_key
   v1-dependency-cache-{{ checksum "yarn.lock" }}
