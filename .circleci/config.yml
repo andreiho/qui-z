@@ -79,6 +79,7 @@ jobs:
 
     steps:
       - checkout
+      - *restore_yarn
       - run:
           name: Log in to now.sh
           command: now -t ${NOW_TOKEN}
