@@ -72,8 +72,6 @@ jobs:
   deploy:
     <<: *defaults
 
-    working_directory: *working_directory
-
     steps:
       - checkout
       - run:
@@ -84,7 +82,9 @@ jobs:
           command: now -t ${NOW_TOKEN}
       - run:
           name: Deploy to now
-          command: now -t ${NOW_TOKEN} -e MONGO_URL=${MONGO_URL} -e AUTH_SECRET=${AUTH_SECRET} -e AUTH_KEY=${AUTH_KEY} alias qui-z
+          command: |
+              URL=$(now -t ${NOW_TOKEN})
+              now -t ${NOW_TOKEN} -e MONGO_URL=${MONGO_URL} -e AUTH_SECRET=${AUTH_SECRET} -e AUTH_KEY=${AUTH_KEY} alias ${URL} qui-z
 
 ############################################################
 # Workflows
