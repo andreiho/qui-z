@@ -1,6 +1,6 @@
 {
   "db": {
-    "mongoUrl": "mongodb+srv://andreiho:Gc4aTIydKR8IaUtA@andrei-horodinca-aalpx.mongodb.net/qui-z"
+    "mongoUrl": "mongodb://@localhost:27017/qui-z"
   },
   "ports": {
     "client": 3000,
@@ -8,6 +8,6 @@
   },
   "auth": {
     "secret": "ugKCwDFitDcCvyLnInOuJAyC",
-    "key": "quiz"
+    "key": "USER-SESSION"
   }
 }
