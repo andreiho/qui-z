@@ -72,6 +72,8 @@ jobs:
           command: yarn test
 
   deploy:
+    <<: *defaults
+
     working_directory: *working_directory
 
     steps:
