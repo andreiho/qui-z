@@ -1,0 +1,111 @@
+
+version: 2
+
+############################################################
+# References
+############################################################
+
+working_directory: &working_directory
+  ~/qui-z
+
+defaults: &defaults
+  working_directory: *working_directory
+  docker:
+    - image: circleci/node:8-browsers
+
+dependency_cache_key: &dependency_cache_key
+  v1-dependency-cache-{{ checksum "yarn.lock" }}
+dependency_cache_key_backup: &dependency_cache_key_backup
+  v1-dependency-cache
+
+yarn_cache_key: &yarn_cache_key
+  v1-yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+yarn_cache_key_backup: &yarn_cache_key_backup
+  v1-yarn-cache-{{ .Branch }}
+
+restore_deps: &restore_deps
+  restore_cache:
+    keys:
+      - *dependency_cache_key
+      - *dependency_cache_key_backup
+
+restore_yarn: &restore_yarn
+  restore_cache:
+    keys:
+      - *yarn_cache_key
+      - *yarn_cache_key_backup
+
+############################################################
+# Jobs
+############################################################
+
+jobs:
+  dependencies:
+    <<: *defaults
+
+    steps:
+      - checkout
+      - *restore_yarn
+      - run:
+          name: Install now
+          command: yarn global add now
+      - run:
+          name: Install dependencies
+          command: yarn install --pure-lockfile
+      - save_cache:
+          key: *dependency_cache_key
+          paths:
+            - ./node_modules
+      - save_cache:
+          key: *yarn_cache_key
+          paths:
+            - ~/.yarn-cache
+
+  test:
+    <<: *defaults
+
+    steps:
+      - checkout
+      - *restore_deps
+      - run:
+          name: Run tests
+          command: yarn test
+
+  deploy:
+    working_directory: *working_directory
+
+    steps:
+      - checkout
+      - run:
+          name: Deploy to now.sh
+          command:
+            - now -t ${NOW_TOKEN}
+            - now -t ${NOW_TOKEN} -e MONGO_URL=${MONGO_URL} -e AUTH_SECRET=${AUTH_SECRET} -e AUTH_KEY=${AUTH_KEY} alias qui-z
+
+############################################################
+# Workflows
+############################################################
+
+workflows:
+  version: 2
+
+  build-test-deploy:
+    jobs:
+      - dependencies:
+          filters:
+            tags:
+              only: /.*/
+
+      - test:
+          requires:
+            - dependencies
+          filters:
+            tags:
+              only: /.*/
+
+      - deploy-production:
+          requires:
+            - test
+          filters:
+            branches:
+              only: master
